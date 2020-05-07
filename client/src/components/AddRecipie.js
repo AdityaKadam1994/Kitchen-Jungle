@@ -55,6 +55,7 @@ const AddRecipie = () => {
               placeholder="Add Image Link"
               value={imageLink}
               onChange={(e) => setImageLink(e.target.value)}
+              name="thumbnail"
             />
           </FormGroup>
           <FormGroup>

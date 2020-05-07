@@ -1,6 +1,18 @@
 const express = require("express");
 const router = express.Router();
+var multer = require("multer");
+// var upload = multer({ dest: "./uploads/" });
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage });
 //Item Model
 const Item = require("../../models/item");
 
@@ -18,12 +30,13 @@ router.get("/:id", (req, res) => {
 
 //Post request   api/items
 
-router.post("/", (req, res) => {
+router.post("/", upload.single("thumbnail"), (req, res) => {
+  console.log(req.file);
   const newItem = new Item({
     title: req.body.title,
     ingredients: req.body.ingredients,
     redirection: req.body.redirection,
-    thumbnail: req.body.thumbnail,
+    thumbnail: req.file,
   });
   newItem.save().then((item) => res.json(item));
 });
