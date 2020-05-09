@@ -6,18 +6,26 @@ import axios from "axios";
 
 const AddRecipie = () => {
   const [title, setTitle] = useState(null);
+  const [name, setFilename] = useState(null);
   const [ingredients, setIngredients] = useState(null);
   const [imageLink, setImageLink] = useState(null);
   const [redirectionLink, setRedirectionLink] = useState(null);
   const dispatch = useDispatch();
+  const handleChange = (e) => {
+    console.log(e.target.files[0].name.toString());
+    setFilename(e.target.files[0].name);
+    setImageLink(e.target.files[0]);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    let postRecipe = {
-      title: title,
-      ingredients: ingredients,
-      redirection: redirectionLink,
-      thumbnail: imageLink,
-    };
+    console.log(imageLink);
+    // let filePath = imageLink.replace("C:\\fakepath\\", "");
+    let postRecipe = new FormData();
+    postRecipe.append("title", title);
+    postRecipe.append("ingredients", ingredients);
+    postRecipe.append("redirection", redirectionLink);
+    postRecipe.append("thumbnail", imageLink);
+
     dispatch(RecipieAdd(postRecipe));
     axios.post("/api/items", postRecipe).then((res) => {});
   };
@@ -28,7 +36,7 @@ const AddRecipie = () => {
         <Form
           className="add-recipie-form"
           onSubmit={handleSubmit}
-          enctype="multipart/form-data"
+          encType="multipart/form-data"
         >
           <FormGroup>
             <Label>Recipie Title</Label>
@@ -53,8 +61,7 @@ const AddRecipie = () => {
             <Input
               type="file"
               placeholder="Add Image Link"
-              value={imageLink}
-              onChange={(e) => setImageLink(e.target.value)}
+              onChange={handleChange}
               name="thumbnail"
             />
           </FormGroup>

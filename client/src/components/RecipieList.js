@@ -44,7 +44,7 @@ const RecipieList = () => {
                     <CardImg
                       top
                       width="100%"
-                      src={item.thumbnail}
+                      src={`${item.thumbnail}`}
                       alt={item.title}
                     />
                     <span
