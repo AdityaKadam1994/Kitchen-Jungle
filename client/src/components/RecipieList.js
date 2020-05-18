@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "./Pagination";
 import {
@@ -34,9 +34,9 @@ const RecipieList = () => {
   const lastRecipeIndex = current * perPage;
   const firstRecipeIndex = lastRecipeIndex - perPage;
   const currentRecData = recData.slice(firstRecipeIndex, lastRecipeIndex);
-  const paginate = (pageNumber) => {
+  const paginate = useCallback((pageNumber) => {
     setCurrent(pageNumber);
-  };
+  });
 
   return (
     <div className="class-list-wrapper">
