@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import Pagination from "./Pagination";
 import {
   Container,
   Row,
@@ -12,33 +12,38 @@ import {
   CardSubtitle,
 } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { RecipieGet, DeleteRecipie } from "../store/actions";
+import { RecipeGetDispatcher, deleteRecipeDispatcher } from "../store/actions";
 
 const RecipieList = () => {
   const [recipieList, setRecipieList] = useState([]);
   const dispatch = useDispatch();
-
   const recData = useSelector((state) => state.recipieData);
-  console.log(recData);
+  const [perPage, setPerpage] = useState(3);
+  const [current, setCurrent] = useState(1);
+  // setTotal(recData.length);
 
   useEffect(() => {
-    setRecipieList(recData);
-    axios.get("/api/items").then((res) => {
-      dispatch(RecipieGet(res.data));
-    });
+    dispatch(RecipeGetDispatcher());
   }, []);
 
   const handleDelete = (Id) => {
-    dispatch(DeleteRecipie(null, Id));
-    axios.delete(`/api/items/${Id}`).then((res) => console.log(res));
+    dispatch(deleteRecipeDispatcher(Id));
+  };
+
+  //pagination
+  const lastRecipeIndex = current * perPage;
+  const firstRecipeIndex = lastRecipeIndex - perPage;
+  const currentRecData = recData.slice(firstRecipeIndex, lastRecipeIndex);
+  const paginate = (pageNumber) => {
+    setCurrent(pageNumber);
   };
 
   return (
     <div className="class-list-wrapper">
       <Container>
         <Row className="my-5">
-          {recData
-            ? recData.map((item) => (
+          {currentRecData
+            ? currentRecData.map((item) => (
                 <Col key={item._id} md="4" className="mb-4">
                   <Card className="h-100">
                     <CardImg
@@ -78,6 +83,11 @@ const RecipieList = () => {
               ))
             : null}
         </Row>
+        <Pagination
+          totalRecipe={recData.length}
+          recipePerPage={perPage}
+          paginate={paginate}
+        />
       </Container>
     </div>
   );

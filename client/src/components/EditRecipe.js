@@ -31,7 +31,7 @@ const EditRecipe = () => {
       redirection: redirectionLink,
       thumbnail: imageLink,
     };
-    dispatch(RecipieAdd(postRecipe));
+    // dispatch(RecipieAdd(postRecipe));
     axios.put(`/api/items/${id}`, postRecipe).then((res) => {
       console.log(res);
     });

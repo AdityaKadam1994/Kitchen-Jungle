@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const items = require("./routes/api/items");
 const app = express();
+const fileUpload = require("express-fileupload");
+
+app.use(fileUpload());
 
 //Middleware
 app.use(bodyParser.json());

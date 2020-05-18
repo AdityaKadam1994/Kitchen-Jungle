@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, Button, Form, FormGroup, Label, Input } from "reactstrap";
-import { RecipieAdd } from "../store/actions";
+import { addRecipeDispatcher } from "../store/actions";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 
@@ -12,22 +12,17 @@ const AddRecipie = () => {
   const [redirectionLink, setRedirectionLink] = useState(null);
   const dispatch = useDispatch();
   const handleChange = (e) => {
-    console.log(e.target.files[0].name.toString());
     setFilename(e.target.files[0].name);
     setImageLink(e.target.files[0]);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(imageLink);
-    // let filePath = imageLink.replace("C:\\fakepath\\", "");
     let postRecipe = new FormData();
     postRecipe.append("title", title);
     postRecipe.append("ingredients", ingredients);
     postRecipe.append("redirection", redirectionLink);
     postRecipe.append("thumbnail", imageLink);
-
-    dispatch(RecipieAdd(postRecipe));
-    axios.post("/api/items", postRecipe).then((res) => {});
+    dispatch(addRecipeDispatcher(postRecipe));
   };
   return (
     <div>

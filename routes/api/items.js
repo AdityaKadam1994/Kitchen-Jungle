@@ -4,7 +4,7 @@ var multer = require("multer");
 const fileUpload = require("express-fileupload");
 var path = require("path");
 // var upload = multer({ dest: "./uploads/" });
-router.use(fileUpload());
+// router.use(fileUpload());
 
 // const storage = multer.diskStorage({
 //   // destination: function (req, file, cb) {
